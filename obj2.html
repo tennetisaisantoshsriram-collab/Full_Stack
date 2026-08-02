@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Styled Webpage</title>
+<link rel="stylesheet" href="obj2.css">
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+    <h1>My Styled Webpage</h1>
+    <p class="subtitle">Exploring CSS3 Styling &amp; HTML5 Canvas Graphics</p>
+</header>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav class="site-nav">
+    <a href="#canvas-section">Canvas</a>
+    <a href="#cards-section">Cards</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<!-- ===================== PART A: HTML5 CANVAS ===================== -->
+<section id="canvas-section" class="canvas-section">
+    <h2>HTML5 Canvas Drawing</h2>
+    <canvas id="myCanvas" width="500" height="300">
+        Your browser does not support the HTML5 canvas element.
+    </canvas>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Rectangle
+        ctx.fillStyle = '#4a90d9';
+        ctx.fillRect(30, 30, 150, 90);
+        ctx.strokeStyle = '#0b3d66';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(30, 30, 150, 90);
+
+        // Circle
+        ctx.beginPath();
+        ctx.arc(320, 75, 55, 0, Math.PI * 2);
+        ctx.fillStyle = '#e67e22';
+        ctx.fill();
+        ctx.strokeStyle = '#a85300';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Line
+        ctx.beginPath();
+        ctx.moveTo(30, 170);
+        ctx.lineTo(470, 170);
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Name as text
+        ctx.font = '28px Georgia, serif';
+        ctx.fillStyle = '#333333';
+        ctx.fillText('Your Name Here', 90, 240);
+    </script>
+</section>
+
+<!-- ===================== PART B: CONTENT CARDS ===================== -->
+<section id="cards-section" class="cards-section">
+    <h2>Content Cards</h2>
+    <div class="card-container">
+        <div class="card">
+            <h3>Card One</h3>
+            <p>This card demonstrates a solid background color, rounded corners, and a soft box shadow that lifts on hover.</p>
+            <button class="btn">Learn More</button>
+        </div>
+        <div class="card">
+            <h3>Card Two</h3>
+            <p>This card uses a gradient background along with a custom font family and text shadow on its heading.</p>
+            <button class="btn">Learn More</button>
+        </div>
+        <div class="card">
+            <h3>Card Three</h3>
+            <p>This card highlights borders, margin, and padding working together to create balanced spacing.</p>
+            <button class="btn">Learn More</button>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="about-section">
+    <h2>About This Page</h2>
+    <p>This page was built to demonstrate core CSS3 styling techniques &mdash; including gradients, shadows,
+        rounded corners, and hover effects &mdash; alongside simple HTML5 Canvas graphics.</p>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer id="contact" class="site-footer">
+    <p>&copy; 2026 My Styled Webpage. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

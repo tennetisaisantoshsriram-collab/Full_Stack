@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Information Portal</title>
+<link rel="stylesheet" href="obj1.css">
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header>
+    <img src="https://via.placeholder.com/80x80.png?text=Logo" alt="College Logo">
+    <h1 style="display:inline-block; vertical-align:middle;">College Information Portal</h1>
+</header>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav>
+    <a href="#about">About</a>
+    <a href="#students">Student Details</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#registration">Registration</a>
+    <a href="#media">Media</a>
+</nav>
+
+<!-- ===================== PART A: BASIC HTML ===================== -->
+<section id="about">
+    <article>
+        <h2>About Our College</h2>
+        <p>
+            <b>ABC Institute of Technology</b> is a premier institution dedicated to academic excellence,
+            innovation, and holistic development of students. Established with a vision to create
+            <i>skilled professionals</i> for tomorrow, the college offers a wide range of undergraduate
+            and postgraduate programs.
+        </p>
+        <p>
+            Our motto is <u>"Knowledge, Character, Service"</u>. The college was founded in the year
+            1998<sup>th</sup>, and since then has produced thousands of successful graduates. The
+            chemical formula for water, H<sub>2</sub>O, is often used as a symbol of purity in our
+            college crest — reflecting our commitment to clarity of thought and purpose.
+        </p>
+
+        <h3>Courses Offered (Ordered List)</h3>
+        <ol>
+            <li>Computer Science &amp; Engineering</li>
+            <li>Electronics &amp; Communication Engineering</li>
+            <li>Mechanical Engineering</li>
+            <li>Civil Engineering</li>
+        </ol>
+
+        <h3>Campus Facilities (Unordered List)</h3>
+        <ul>
+            <li>Central Library</li>
+            <li>Computer Labs</li>
+            <li>Sports Complex</li>
+            <li>Hostel Accommodation</li>
+        </ul>
+
+        <h3>Useful Links</h3>
+        <p>
+            Visit our official website:
+            <a href="https://www.example-college.edu" target="_blank">College Website</a><br>
+            Search for more information on
+            <a href="https://www.google.com" target="_blank">Google</a>
+        </p>
+    </article>
+</section>
+
+<!-- ===================== PART B: TABLES AND IMAGES ===================== -->
+<section id="students">
+    <h2>Student Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Branch</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>101</td>
+                <td>Aarav Sharma</td>
+                <td>CSE (AI &amp; ML)</td>
+                <td>aarav.sharma@example.edu</td>
+            </tr>
+            <tr>
+                <td>102</td>
+                <td>Priya Reddy</td>
+                <td>Electronics &amp; Communication</td>
+                <td>priya.reddy@example.edu</td>
+            </tr>
+            <tr>
+                <td>103</td>
+                <td>Rohan Verma</td>
+                <td>Mechanical Engineering</td>
+                <td>rohan.verma@example.edu</td>
+            </tr>
+            <tr>
+                <td>104</td>
+                <td>Sneha Iyer</td>
+                <td>Civil Engineering</td>
+                <td>sneha.iyer@example.edu</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section id="gallery">
+    <h2>College Gallery</h2>
+    <div class="college-images">
+        <img src="https://via.placeholder.com/300x200.png?text=College+Logo" alt="College Logo">
+        <img src="https://via.placeholder.com/300x200.png?text=College+Campus" alt="Front view of the college campus building">
+    </div>
+</section>
+
+<!-- ===================== PART C: FORMS ===================== -->
+<section id="registration">
+    <h2>Student Registration Form</h2>
+    <form action="#" method="post">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required><br>
+
+        <fieldset>
+            <legend>Gender</legend>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male" style="width:auto;">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female" style="width:auto;">Female</label>
+            <input type="radio" id="other" name="gender" value="other">
+            <label for="other" style="width:auto;">Other</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Hobbies</legend>
+            <input type="checkbox" id="reading" name="hobbies" value="reading">
+            <label for="reading" style="width:auto;">Reading</label>
+            <input type="checkbox" id="sports" name="hobbies" value="sports">
+            <label for="sports" style="width:auto;">Sports</label>
+            <input type="checkbox" id="music" name="hobbies" value="music">
+            <label for="music" style="width:auto;">Music</label>
+            <input type="checkbox" id="coding" name="hobbies" value="coding">
+            <label for="coding" style="width:auto;">Coding</label>
+        </fieldset>
+
+        <label for="branch">Branch:</label>
+        <select id="branch" name="branch">
+            <option value="cse">Computer Science &amp; Engineering</option>
+            <option value="ece">Electronics &amp; Communication</option>
+            <option value="mech">Mechanical Engineering</option>
+            <option value="civil">Civil Engineering</option>
+        </select><br>
+
+        <fieldset>
+            <legend>HTML5 Input Types</legend>
+
+            <label for="altemail">Email:</label>
+            <input type="email" id="altemail" name="altemail" placeholder="you@example.com"><br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob"><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="15" max="100" placeholder="e.g. 20"><br>
+
+            <label for="favcolor">Favourite Color:</label>
+            <input type="color" id="favcolor" name="favcolor" value="#0b3d66"><br>
+
+            <label for="satisfaction">Satisfaction Level:</label>
+            <input type="range" id="satisfaction" name="satisfaction" min="0" max="10" value="5">
+        </fieldset>
+
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" rows="4" placeholder="Any additional comments..."></textarea><br>
+
+        <div class="btn-row">
+            <input type="submit" value="Submit">
+            <input type="reset" value="Reset">
+        </div>
+    </form>
+</section>
+
+<!-- ===================== PART D: HTML5 AUDIO & VIDEO ===================== -->
+<section id="media">
+    <h2>College Media</h2>
+
+    <article>
+        <h3>College Anthem (Audio)</h3>
+        <audio controls>
+            <source src="anthem.mp3" type="audio/mpeg">
+            <source src="anthem.ogg" type="audio/ogg">
+            Your browser does not support the audio element.
+        </audio>
+    </article>
+
+    <article>
+        <h3>Campus Tour (Video)</h3>
+        <video controls poster="https://via.placeholder.com/500x280.png?text=Campus+Tour+Video">
+            <source src="campus-tour.mp4" type="video/mp4">
+            <source src="campus-tour.webm" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+    </article>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+    <p>&copy; 2026 ABC Institute of Technology. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

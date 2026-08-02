@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+    color: #222;
+    line-height: 1.6;
+}
+header {
+    background-color: #0b3d66;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+header img {
+    height: 70px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+nav {
+    background-color: #14548c;
+    padding: 10px 0;
+    text-align: center;
+}
+nav a {
+    color: #fff;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+section {
+    max-width: 950px;
+    margin: 25px auto;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+h2 {
+    color: #0b3d66;
+    border-bottom: 2px solid #0b3d66;
+    padding-bottom: 5px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #0b3d66;
+    color: #fff;
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+.college-images img {
+    max-width: 45%;
+    margin: 10px 2%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+form label {
+    display: inline-block;
+    width: 140px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select,
+form textarea {
+    padding: 6px;
+    width: 250px;
+    margin-top: 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+form textarea {
+    vertical-align: top;
+}
+fieldset {
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 15px;
+}
+.btn-row {
+    margin-top: 20px;
+}
+.btn-row input {
+    padding: 8px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+input[type="submit"] {
+    background-color: #0b3d66;
+    color: #fff;
+}
+input[type="reset"] {
+    background-color: #ccc;
+    color: #222;
+}
+footer {
+    background-color: #0b3d66;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+article {
+    margin-bottom: 20px;
+}
+video, audio {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 10px;
+}
