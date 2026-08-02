@@ -1,0 +1,175 @@
+/* ===================== GLOBAL ===================== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    background-color: #eef1f5;
+    color: #2b2b2b;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* ===================== HEADER ===================== */
+.site-header {
+    /* Gradient background */
+    background: linear-gradient(135deg, #0b3d66, #14548c 50%, #2e8bc0);
+    color: #ffffff;
+    text-align: center;
+    padding: 40px 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    /* Text shadow */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.site-header .subtitle {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-top: 10px;
+    color: #dfeeff;
+}
+
+/* ===================== NAVIGATION ===================== */
+.site-nav {
+    background-color: #14548c;
+    padding: 12px 0;
+    text-align: center;
+}
+
+.site-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for navigation links */
+.site-nav a:hover {
+    background-color: #ffffff;
+    color: #0b3d66;
+}
+
+/* ===================== SECTIONS ===================== */
+section {
+    max-width: 950px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background-color: #ffffff;
+    border: 1px solid #d5dbe2;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    color: #0b3d66;
+    border-bottom: 2px solid #0b3d66;
+    padding-bottom: 8px;
+}
+
+/* ===================== CANVAS ===================== */
+.canvas-section {
+    text-align: center;
+}
+
+#myCanvas {
+    border: 3px solid #0b3d66;
+    border-radius: 8px;
+    background-color: #fbfbfb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================== CARDS ===================== */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.card {
+    flex: 1 1 250px;
+    max-width: 280px;
+    background-color: #f7f9fc;
+    border: 1px solid #cddcec;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for cards */
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+}
+
+.card:nth-child(2) {
+    /* Gradient background on second card */
+    background: linear-gradient(160deg, #eaf3fb, #cfe4f7);
+}
+
+.card h3 {
+    color: #0b3d66;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+    font-size: 1.4rem;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: #444444;
+}
+
+/* ===================== BUTTONS ===================== */
+.btn {
+    margin-top: 15px;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #0b3d66;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect for buttons */
+.btn:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+}
+
+/* ===================== ABOUT SECTION ===================== */
+.about-section p {
+    font-size: 1rem;
+    color: #333333;
+}
+
+/* ===================== FOOTER ===================== */
+.site-footer {
+    background-color: #0b3d66;
+    color: #ffffff;
+    text-align: center;
+    padding: 18px;
+    margin-top: 40px;
+    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
