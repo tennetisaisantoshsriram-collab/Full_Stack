@@ -28,40 +28,6 @@
     <canvas id="myCanvas" width="500" height="300">
         Your browser does not support the HTML5 canvas element.
     </canvas>
-
-    <script>
-        const canvas = document.getElementById('myCanvas');
-        const ctx = canvas.getContext('2d');
-
-        // Rectangle
-        ctx.fillStyle = '#4a90d9';
-        ctx.fillRect(30, 30, 150, 90);
-        ctx.strokeStyle = '#0b3d66';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(30, 30, 150, 90);
-
-        // Circle
-        ctx.beginPath();
-        ctx.arc(320, 75, 55, 0, Math.PI * 2);
-        ctx.fillStyle = '#e67e22';
-        ctx.fill();
-        ctx.strokeStyle = '#a85300';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Line
-        ctx.beginPath();
-        ctx.moveTo(30, 170);
-        ctx.lineTo(470, 170);
-        ctx.strokeStyle = '#2ecc71';
-        ctx.lineWidth = 4;
-        ctx.stroke();
-
-        // Name as text
-        ctx.font = '28px Georgia, serif';
-        ctx.fillStyle = '#333333';
-        ctx.fillText('Your Name Here', 90, 240);
-    </script>
 </section>
 
 <!-- ===================== PART B: CONTENT CARDS ===================== -->
