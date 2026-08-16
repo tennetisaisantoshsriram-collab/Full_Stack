@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile - JavaScript Class</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Student Profile Generator</h1>
+        <p>Using JavaScript Classes &amp; DOM Manipulation</p>
+    </header>
+
+    <main>
+
+        <!-- Input Form Section -->
+        <section class="form-section">
+            <h2>Enter Student Details</h2>
+            <div class="form-group">
+                <label for="studentName">Name</label>
+                <input type="text" id="studentName" placeholder="e.g. Ravi Kumar">
+            </div>
+            <div class="form-group">
+                <label for="rollNo">Roll Number</label>
+                <input type="text" id="rollNo" placeholder="e.g. A23126552001">
+            </div>
+            <div class="form-group">
+                <label for="department">Department</label>
+                <input type="text" id="department" placeholder="e.g. CSE (AI &amp; ML)">
+            </div>
+            <div class="form-group">
+                <label for="cgpa">CGPA</label>
+                <input type="number" id="cgpa" step="0.01" min="0" max="10" placeholder="e.g. 8.42">
+            </div>
+            <button id="generateBtn">Generate Profile</button>
+            <p id="errorMsg" class="error-msg"></p>
+        </section>
+
+        <!-- Profile Display Section (filled dynamically) -->
+        <section id="profileSection" class="profile-section hidden">
+            <h2>Student Profile</h2>
+            <div id="profileCard" class="profile-card"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>JavaScript Class &amp; DOM Manipulation Demo</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
