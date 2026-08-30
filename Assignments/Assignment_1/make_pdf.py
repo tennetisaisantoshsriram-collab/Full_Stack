@@ -323,72 +323,95 @@ class PDF(FPDF):
         )
 
 
-M  = 15          # left/right margin
-CW = 210 - 2 * M  # content width
+M      = 15
+CW     = 210 - 2 * M
+LH     = 5      # line height mm
+LIMIT  = 272    # y beyond which we start a new page
 
 pdf = PDF()
-pdf.set_auto_page_break(auto=True, margin=18)
+pdf.set_margins(M, 15, M)
+pdf.set_auto_page_break(auto=False)   # manual control
+
+
+def new_page(p):
+    """Add a page and reset text state (footer changes font/color)."""
+    p.add_page()
+    p.set_text_color(0, 0, 0)
+
+
+def write_label(p, text):
+    """Bold Helvetica 11pt label."""
+    p.set_font("Helvetica", "B", 11)
+    p.set_text_color(0, 0, 0)
+    p.set_x(M)
+    p.cell(CW, 7, text)
+    p.ln(7)
+
+
+def write_lines(p, lines):
+    """Write monospace lines, manual page break + font/color reset."""
+    p.set_font("Courier", "", 9)
+    p.set_text_color(0, 0, 0)
+    for line in lines:
+        if p.get_y() + LH > LIMIT:
+            new_page(p)
+            p.set_font("Courier", "", 9)
+            p.set_text_color(0, 0, 0)
+        safe = (line or " ").encode("latin-1", errors="replace").decode("latin-1")
+        p.set_x(M + 3)
+        p.cell(CW - 3, LH, safe)
+        p.ln(LH)
+
+
+def rule(p):
+    """Thin horizontal separator line."""
+    p.set_draw_color(120, 120, 120)
+    p.line(M, p.get_y(), M + CW, p.get_y())
+
 
 # ── Cover page ────────────────────────────────────────────────────────────────
-pdf.add_page()
-pdf.set_text_color(0, 0, 0)
-
-pdf.set_y(90)
+new_page(pdf)
+pdf.set_xy(M, 110)
 pdf.set_font("Helvetica", "B", 22)
-pdf.cell(0, 12, "Assignment1: Inheritance Types in JS", align="C", ln=True)
-
-pdf.ln(6)
-pdf.set_font("Helvetica", "", 12)
-pdf.cell(0, 8, "Full-Stack Development Lab", align="C", ln=True)
-
-pdf.ln(4)
-pdf.set_font("Helvetica", "", 10)
-pdf.set_text_color(80, 80, 80)
-pdf.cell(0, 7, "Single  |  Multilevel  |  Hierarchical  |  Multiple (Mixin)  |  Hybrid", align="C", ln=True)
+pdf.cell(CW, 12, "Assignment1: Inheritance Types in JS", align="C")
 
 # ── One page per inheritance type ────────────────────────────────────────────
 for t in TYPES:
-    pdf.add_page()
+    new_page(pdf)
+
+    # Title
+    pdf.set_font("Helvetica", "B", 14)
     pdf.set_text_color(0, 0, 0)
-
-    # Section title
-    pdf.set_font("Helvetica", "B", 13)
-    pdf.cell(0, 9, t["title"], ln=True)
-    pdf.line(M, pdf.get_y(), M + CW, pdf.get_y())
-    pdf.ln(3)
-
-    # Explanation
-    pdf.set_font("Helvetica", "", 9)
-    pdf.set_text_color(40, 40, 40)
-    pdf.multi_cell(CW, 5, t["explanation"])
-    pdf.ln(4)
-
-    # Code label
-    pdf.set_font("Helvetica", "B", 9)
-    pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 5, "Code:", ln=True)
-    pdf.ln(1)
-
-    # Code lines (monospace, black on white)
-    pdf.set_font("Courier", "", 7.5)
-    pdf.set_text_color(30, 30, 30)
-    for line in t["code"]:
-        safe = line.encode("latin-1", errors="replace").decode("latin-1")
-        pdf.cell(CW, 4.5, safe, ln=True)
+    pdf.set_x(M)
+    pdf.cell(CW, 10, t["title"])
+    pdf.ln(10)
+    rule(pdf)
     pdf.ln(5)
 
-    # Output label
-    pdf.set_font("Helvetica", "B", 9)
+    # Description
+    write_label(pdf, "Description:")
+    pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(0, 0, 0)
-    pdf.cell(0, 5, "Output:", ln=True)
-    pdf.ln(1)
+    pdf.set_x(M)
+    pdf.multi_cell(CW, 6, t["explanation"])
+    pdf.ln(6)
 
-    # Output lines (monospace, black on white)
-    pdf.set_font("Courier", "", 8)
-    pdf.set_text_color(30, 30, 30)
-    for line in t["output"]:
-        safe = line.encode("latin-1", errors="replace").decode("latin-1")
-        pdf.cell(CW, 5, safe, ln=True)
+    # Code
+    write_label(pdf, "Code:")
+    rule(pdf)
+    pdf.ln(3)
+    write_lines(pdf, t["code"])
+    pdf.ln(2)
+    rule(pdf)
+    pdf.ln(7)
+
+    # Output
+    write_label(pdf, "Output:")
+    rule(pdf)
+    pdf.ln(3)
+    write_lines(pdf, t["output"])
+    pdf.ln(2)
+    rule(pdf)
 
 pdf.output(OUT)
 print(f"PDF saved: {OUT}")
