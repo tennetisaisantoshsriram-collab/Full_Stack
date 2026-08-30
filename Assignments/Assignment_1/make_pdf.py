@@ -348,19 +348,28 @@ def write_label(p, text):
     p.ln(7)
 
 
-def write_lines(p, lines):
-    """Write monospace lines, manual page break + font/color reset."""
+def write_lines(p, lines, bg=(28, 28, 28), fg=(210, 210, 210)):
+    """Write monospace lines on a dark background, one rect per line."""
     p.set_font("Courier", "", 9)
-    p.set_text_color(0, 0, 0)
+    p.set_text_color(*fg)
     for line in lines:
         if p.get_y() + LH > LIMIT:
             new_page(p)
             p.set_font("Courier", "", 9)
-            p.set_text_color(0, 0, 0)
+            p.set_text_color(*fg)
         safe = (line or " ").encode("latin-1", errors="replace").decode("latin-1")
+        # Dark background for this line
+        p.set_fill_color(*bg)
+        p.rect(M, p.get_y(), CW, LH, "F")
+        # Text on top
         p.set_x(M + 3)
         p.cell(CW - 3, LH, safe)
         p.ln(LH)
+    # Close-off the dark block with one extra filled row of padding
+    p.set_fill_color(*bg)
+    p.rect(M, p.get_y(), CW, 2, "F")
+    p.ln(2)
+    p.set_text_color(0, 0, 0)
 
 
 def rule(p):
@@ -398,20 +407,15 @@ for t in TYPES:
 
     # Code
     write_label(pdf, "Code:")
-    rule(pdf)
-    pdf.ln(3)
-    write_lines(pdf, t["code"])
     pdf.ln(2)
-    rule(pdf)
+    write_lines(pdf, t["code"])
     pdf.ln(7)
 
     # Output
     write_label(pdf, "Output:")
-    rule(pdf)
-    pdf.ln(3)
-    write_lines(pdf, t["output"])
     pdf.ln(2)
-    rule(pdf)
+    write_lines(pdf, t["output"])
+    pdf.ln(3)
 
 pdf.output(OUT)
 print(f"PDF saved: {OUT}")
