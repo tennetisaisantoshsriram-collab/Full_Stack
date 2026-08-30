@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Inheritance Types — Assignment 1</title>
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            background: linear-gradient(135deg, #1f6feb 0%, #388bfd 100%);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .page-header p {
+            margin-top: 8px;
+            font-size: 1rem;
+            color: #cfe2ff;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* ── Cards ── */
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 22px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .card-header .type-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .card-header .type-info h2 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #e6edf3;
+        }
+
+        .card-header .type-info p {
+            font-size: 0.82rem;
+            color: #8b949e;
+            margin-top: 2px;
+        }
+
+        /* Colour themes per inheritance type */
+        .t1 .type-badge { background: #21262d; color: #58a6ff; border: 2px solid #1f6feb; }
+        .t2 .type-badge { background: #21262d; color: #3fb950; border: 2px solid #238636; }
+        .t3 .type-badge { background: #21262d; color: #f78166; border: 2px solid #da3633; }
+        .t4 .type-badge { background: #21262d; color: #d2a8ff; border: 2px solid #8957e5; }
+        .t5 .type-badge { background: #21262d; color: #ffa657; border: 2px solid #e3b341; }
+
+        .t1 .card-header { border-left: 4px solid #1f6feb; }
+        .t2 .card-header { border-left: 4px solid #238636; }
+        .t3 .card-header { border-left: 4px solid #da3633; }
+        .t4 .card-header { border-left: 4px solid #8957e5; }
+        .t5 .card-header { border-left: 4px solid #e3b341; }
+
+        /* ── Diagram ── */
+        .diagram {
+            background: #0d1117;
+            padding: 12px 22px;
+            border-bottom: 1px solid #30363d;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.78rem;
+            color: #8b949e;
+            line-height: 1.7;
+        }
+
+        .diagram span.hl { color: #58a6ff; font-weight: 600; }
+
+        /* ── Output panel ── */
+        .output-panel {
+            padding: 16px 22px;
+        }
+
+        .output-panel h3 {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8b949e;
+            margin-bottom: 10px;
+        }
+
+        .output-box {
+            background: #010409;
+            border: 1px solid #21262d;
+            border-radius: 8px;
+            padding: 14px 16px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82rem;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #c9d1d9;
+        }
+
+        /* Syntax colouring inside output */
+        .out-section  { color: #ffa657; font-weight: 700; }
+        .out-subhead  { color: #79c0ff; }
+        .out-true     { color: #3fb950; }
+        .out-false    { color: #f78166; }
+        .out-key      { color: #d2a8ff; }
+        .out-value    { color: #a5d6ff; }
+        .out-chain    { color: #8b949e; }
+
+        /* ── Footer ── */
+        .page-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 0.78rem;
+            color: #484f58;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-header">
+    <h1>JavaScript Inheritance Types</h1>
+    <p>Assignment 1 &nbsp;|&nbsp; Full-Stack Development Lab</p>
+    <div class="badge-row">
+        <span class="badge">Single</span>
+        <span class="badge">Multilevel</span>
+        <span class="badge">Hierarchical</span>
+        <span class="badge">Multiple (Mixin)</span>
+        <span class="badge">Hybrid</span>
+    </div>
+</div>
+
+<!-- ── Cards rendered by JS ── -->
+<div id="app"></div>
+
+<div class="page-footer">
+    Anil Neerukonda Institute of Technology &amp; Sciences (ANITS) &nbsp;|&nbsp;
+    Full-Stack Development &nbsp;|&nbsp; Assignment 1
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     1. SINGLE INHERITANCE
+════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────────────────────
+//  TYPE 1 : SINGLE INHERITANCE
+//  One parent  →  One child
+// ──────────────────────────────────────────────────────────────
+class Animal {
+    constructor(name, sound) {
+        this.name  = name;
+        this.sound = sound;
+    }
+    speak()   { return `${this.name} says "${this.sound}"`; }
+    breathe() { return `${this.name} breathes air.`; }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name, "Woof");
+        this.breed = breed;
+    }
+    fetch() { return `${this.name} (${this.breed}) fetches the ball!`; }
+    speak() { return `${this.name} barks loudly: "${this.sound}!"`; }   // override
+}
+
+const animalObj = new Animal("Cat", "Meow");
+const dogObj    = new Dog("Rex", "German Shepherd");
+
+const singleLines = [
+    { type: "section", text: "Parent class (Animal):" },
+    { type: "kv", key: "speak()",   val: animalObj.speak() },
+    { type: "kv", key: "breathe()", val: animalObj.breathe() },
+    { type: "subhead", text: "Child class (Dog extends Animal):" },
+    { type: "kv", key: "speak()  [overridden]", val: dogObj.speak() },
+    { type: "kv", key: "breathe() [inherited]", val: dogObj.breathe() },
+    { type: "kv", key: "fetch()  [own method]", val: dogObj.fetch() },
+    { type: "kv", key: "instanceof Animal",     val: String(dogObj instanceof Animal) },
+    { type: "kv", key: "instanceof Dog",        val: String(dogObj instanceof Dog) },
+];
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     2. MULTILEVEL INHERITANCE
+════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────────────────────
+//  TYPE 2 : MULTILEVEL INHERITANCE
+//  Person → Employee → Manager
+// ──────────────────────────────────────────────────────────────
+class Person {
+    constructor(name, age) { this.name = name; this.age = age; }
+    introduce() { return `Hi, I am ${this.name}, ${this.age} years old.`; }
+    eat()        { return `${this.name} is eating.`; }
+}
+
+class Employee extends Person {
+    constructor(name, age, company, salary) {
+        super(name, age);
+        this.company = company;
+        this.salary  = salary;
+    }
+    work()       { return `${this.name} works at ${this.company}.`; }
+    getSalary()  { return `${this.name}'s salary: ₹${this.salary.toLocaleString()}`; }
+}
+
+class Manager extends Employee {
+    constructor(name, age, company, salary, teamSize) {
+        super(name, age, company, salary);
+        this.teamSize = teamSize;
+    }
+    manage()     { return `${this.name} manages a team of ${this.teamSize} at ${this.company}.`; }
+    introduce()  { return `Hi, I am ${this.name}, Manager at ${this.company}.`; }  // override
+}
+
+const personObj   = new Person("Alice", 25);
+const employeeObj = new Employee("Bob", 30, "TCS", 800000);
+const managerObj  = new Manager("Carol", 40, "Infosys", 2000000, 15);
+
+const multilevelLines = [
+    { type: "section",  text: "Level 0 — Person:" },
+    { type: "kv", key: "introduce()", val: personObj.introduce() },
+    { type: "kv", key: "eat()",       val: personObj.eat() },
+    { type: "subhead",  text: "Level 1 — Employee (extends Person):" },
+    { type: "kv", key: "introduce() [inherited]", val: employeeObj.introduce() },
+    { type: "kv", key: "work()      [own]",        val: employeeObj.work() },
+    { type: "kv", key: "getSalary() [own]",         val: employeeObj.getSalary() },
+    { type: "subhead",  text: "Level 2 — Manager (extends Employee):" },
+    { type: "kv", key: "introduce() [overridden]",       val: managerObj.introduce() },
+    { type: "kv", key: "eat()       [from Person 2↑]",   val: managerObj.eat() },
+    { type: "kv", key: "work()      [from Employee]",    val: managerObj.work() },
+    { type: "kv", key: "getSalary() [from Employee]",    val: managerObj.getSalary() },
+    { type: "kv", key: "manage()    [own]",               val: managerObj.manage() },
+    { type: "kv", key: "instanceof Person",   val: String(managerObj instanceof Person) },
+    { type: "kv", key: "instanceof Employee", val: String(managerObj instanceof Employee) },
+    { type: "kv", key: "instanceof Manager",  val: String(managerObj instanceof Manager) },
+];
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     3. HIERARCHICAL INHERITANCE
+════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────────────────────
+//  TYPE 3 : HIERARCHICAL INHERITANCE
+//  Vehicle → Car | Bike | Truck
+// ──────────────────────────────────────────────────────────────
+class Vehicle {
+    constructor(brand, speed) { this.brand = brand; this.speed = speed; }
+    move()     { return `${this.brand} is moving at ${this.speed} km/h.`; }
+    fuelType() { return `${this.brand} runs on fuel.`; }
+    describe() { return `Vehicle: ${this.brand}, Top Speed: ${this.speed} km/h`; }
+}
+
+class Car extends Vehicle {
+    constructor(brand, speed, doors) { super(brand, speed); this.doors = doors; }
+    honk()     { return `${this.brand} car honks: Beep Beep!`; }
+    describe() { return `Car: ${this.brand}, ${this.doors} doors, ${this.speed} km/h`; }
+}
+
+class Bike extends Vehicle {
+    constructor(brand, speed, type) { super(brand, speed); this.type = type; }
+    wheelie()  { return `${this.brand} ${this.type} bike does a wheelie!`; }
+    describe() { return `Bike: ${this.brand} (${this.type}), ${this.speed} km/h`; }
+}
+
+class Truck extends Vehicle {
+    constructor(brand, speed, payload) { super(brand, speed); this.payload = payload; }
+    loadCargo(){ return `${this.brand} truck loads ${this.payload} tons of cargo.`; }
+    describe() { return `Truck: ${this.brand}, Payload: ${this.payload}T, ${this.speed} km/h`; }
+}
+
+const carObj   = new Car("Toyota", 180, 4);
+const bikeObj  = new Bike("Royal Enfield", 140, "Cruiser");
+const truckObj = new Truck("Tata", 100, 20);
+
+const hierarchicalLines = [
+    { type: "section",  text: "Car (extends Vehicle):" },
+    { type: "kv", key: "describe()",         val: carObj.describe() },
+    { type: "kv", key: "move()   [inherited]", val: carObj.move() },
+    { type: "kv", key: "honk()  [own]",       val: carObj.honk() },
+    { type: "subhead",  text: "Bike (extends Vehicle):" },
+    { type: "kv", key: "describe()",          val: bikeObj.describe() },
+    { type: "kv", key: "move()    [inherited]", val: bikeObj.move() },
+    { type: "kv", key: "wheelie() [own]",       val: bikeObj.wheelie() },
+    { type: "subhead",  text: "Truck (extends Vehicle):" },
+    { type: "kv", key: "describe()",            val: truckObj.describe() },
+    { type: "kv", key: "move()      [inherited]",  val: truckObj.move() },
+    { type: "kv", key: "loadCargo() [own]",         val: truckObj.loadCargo() },
+    { type: "kv", key: "car   instanceof Vehicle", val: String(carObj   instanceof Vehicle) },
+    { type: "kv", key: "bike  instanceof Vehicle", val: String(bikeObj  instanceof Vehicle) },
+    { type: "kv", key: "truck instanceof Vehicle", val: String(truckObj instanceof Vehicle) },
+    { type: "kv", key: "car   instanceof Bike",    val: String(carObj   instanceof Bike) },
+];
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     4. MULTIPLE INHERITANCE  (Mixin Pattern)
+════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────────────────────
+//  TYPE 4 : MULTIPLE INHERITANCE  (Mixin Pattern)
+//  JavaScript has no native MI; use composable mixin functions.
+// ──────────────────────────────────────────────────────────────
+const Flyable   = (B) => class extends B {
+    fly()  { return `${this.name} spreads wings and soars!`; }
+    land() { return `${this.name} lands gracefully.`; }
+};
+const Swimmable = (B) => class extends B {
+    swim() { return `${this.name} dives in and swims!`; }
+    dive() { return `${this.name} dives deep underwater.`; }
+};
+const Runnable  = (B) => class extends B {
+    run()    { return `${this.name} runs at full speed!`; }
+    sprint() { return `${this.name} sprints 100 m.`; }
+};
+
+class AnimalBase {
+    constructor(name, species) { this.name = name; this.species = species; }
+    describe() { return `${this.name} is a ${this.species}.`; }
+}
+
+class Duck  extends Runnable(Swimmable(Flyable(AnimalBase))) {
+    constructor(n) { super(n, "Duck"); }
+    quack() { return `${this.name} quacks: Quack Quack!`; }
+}
+class Eagle extends Runnable(Flyable(AnimalBase)) {
+    constructor(n) { super(n, "Eagle"); }
+    hunt()  { return `${this.name} hunts prey from above!`; }
+}
+class Fish  extends Swimmable(AnimalBase) {
+    constructor(n) { super(n, "Fish"); }
+    breatheUnderwater() { return `${this.name} breathes through gills.`; }
+}
+
+const duckObj  = new Duck("Donald");
+const eagleObj = new Eagle("Bald Eagle");
+const fishObj  = new Fish("Nemo");
+
+const multipleLines = [
+    { type: "section",  text: "Duck  (Flyable + Swimmable + Runnable + AnimalBase):" },
+    { type: "kv", key: "describe()", val: duckObj.describe() },
+    { type: "kv", key: "fly()",      val: duckObj.fly() },
+    { type: "kv", key: "swim()",     val: duckObj.swim() },
+    { type: "kv", key: "run()",      val: duckObj.run() },
+    { type: "kv", key: "quack()",    val: duckObj.quack() },
+    { type: "subhead",  text: "Eagle (Flyable + Runnable + AnimalBase):" },
+    { type: "kv", key: "describe()", val: eagleObj.describe() },
+    { type: "kv", key: "fly()",      val: eagleObj.fly() },
+    { type: "kv", key: "hunt()",     val: eagleObj.hunt() },
+    { type: "kv", key: "'swim' in eagle?", val: String("swim" in eagleObj) },
+    { type: "subhead",  text: "Fish  (Swimmable + AnimalBase):" },
+    { type: "kv", key: "describe()", val: fishObj.describe() },
+    { type: "kv", key: "swim()",     val: fishObj.swim() },
+    { type: "kv", key: "breatheUnderwater()", val: fishObj.breatheUnderwater() },
+    { type: "kv", key: "'fly' in fish?", val: String("fly" in fishObj) },
+    { type: "kv", key: "duck instanceof AnimalBase", val: String(duckObj instanceof AnimalBase) },
+];
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     5. HYBRID INHERITANCE
+════════════════════════════════════════════════════════════ -->
+<script>
+// ──────────────────────────────────────────────────────────────
+//  TYPE 5 : HYBRID INHERITANCE
+//  Hierarchical + Multilevel + Mixin combined
+// ──────────────────────────────────────────────────────────────
+const Colorable = (B) => class extends B {
+    setColor(c) { this.color = c; return `${this.constructor.name} color set to ${c}.`; }
+    getColor()  { return this.color ? `Color: ${this.color}` : "No color set."; }
+};
+
+class Shape {
+    constructor(name) { this.name = name; }
+    area()     { return 0; }
+    describe() { return `Shape: ${this.name}`; }
+}
+
+class TwoDShape extends Shape {
+    constructor(name) { super(name); this.dimensions = 2; }
+    perimeter() { return 0; }
+    info() { return `${this.name} | ${this.dimensions}D | Area=${this.area().toFixed(2)} | Perimeter=${this.perimeter().toFixed(2)}`; }
+}
+
+class ThreeDShape extends Shape {
+    constructor(name) { super(name); this.dimensions = 3; }
+    volume() { return 0; }
+    info() { return `${this.name} | ${this.dimensions}D | Area=${this.area().toFixed(2)} | Volume=${this.volume().toFixed(2)}`; }
+}
+
+class Circle extends TwoDShape {
+    constructor(r) { super("Circle"); this.radius = r; }
+    area()      { return Math.PI * this.radius ** 2; }
+    perimeter() { return 2 * Math.PI * this.radius; }
+}
+
+class Rectangle extends TwoDShape {
+    constructor(w, h) { super("Rectangle"); this.width = w; this.height = h; }
+    area()      { return this.width * this.height; }
+    perimeter() { return 2 * (this.width + this.height); }
+}
+
+class Sphere extends Colorable(ThreeDShape) {
+    constructor(r, color) { super("Sphere"); this.radius = r; if (color) this.color = color; }
+    area()   { return 4 * Math.PI * this.radius ** 2; }
+    volume() { return (4/3) * Math.PI * this.radius ** 3; }
+}
+
+const circleObj    = new Circle(7);
+const rectangleObj = new Rectangle(5, 10);
+const sphereObj    = new Sphere(4, "Blue");
+
+const hybridLines = [
+    { type: "section",  text: "Circle (Shape → TwoDShape → Circle):" },
+    { type: "kv", key: "info()",                val: circleObj.info() },
+    { type: "kv", key: "instanceof Shape",       val: String(circleObj instanceof Shape) },
+    { type: "kv", key: "instanceof TwoDShape",   val: String(circleObj instanceof TwoDShape) },
+    { type: "subhead",  text: "Rectangle (Shape → TwoDShape → Rectangle):" },
+    { type: "kv", key: "info()",                val: rectangleObj.info() },
+    { type: "kv", key: "instanceof TwoDShape",   val: String(rectangleObj instanceof TwoDShape) },
+    { type: "subhead",  text: "Sphere (Shape → ThreeDShape → Sphere + Colorable mixin):" },
+    { type: "kv", key: "info()",                val: sphereObj.info() },
+    { type: "kv", key: "getColor()",            val: sphereObj.getColor() },
+    { type: "kv", key: "setColor('Gold')",      val: sphereObj.setColor("Gold") },
+    { type: "kv", key: "getColor() after set",  val: sphereObj.getColor() },
+    { type: "kv", key: "instanceof Shape",       val: String(sphereObj instanceof Shape) },
+    { type: "kv", key: "instanceof ThreeDShape", val: String(sphereObj instanceof ThreeDShape) },
+    { type: "kv", key: "'setColor' in sphere",   val: String("setColor" in sphereObj) },
+];
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     RENDERER
+════════════════════════════════════════════════════════════ -->
+<script>
+const cards = [
+    {
+        num: 1, cls: "t1",
+        title: "Single Inheritance",
+        desc:  "One parent class → one child class. Child inherits all parent members.",
+        diagram: `<span class='hl'>Animal</span>  (Parent)\n   └──  <span class='hl'>Dog</span>     extends Animal`,
+        lines: singleLines,
+    },
+    {
+        num: 2, cls: "t2",
+        title: "Multilevel Inheritance",
+        desc:  "A chain of inheritance: GrandParent → Parent → Child.",
+        diagram: `<span class='hl'>Person</span>  (Level 0)\n   └── <span class='hl'>Employee</span>  extends Person       (Level 1)\n           └── <span class='hl'>Manager</span>  extends Employee   (Level 2)`,
+        lines: multilevelLines,
+    },
+    {
+        num: 3, cls: "t3",
+        title: "Hierarchical Inheritance",
+        desc:  "One parent class → multiple independent child classes.",
+        diagram: `<span class='hl'>Vehicle</span>  (Parent)\n  ├── <span class='hl'>Car</span>    extends Vehicle\n  ├── <span class='hl'>Bike</span>   extends Vehicle\n  └── <span class='hl'>Truck</span>  extends Vehicle`,
+        lines: hierarchicalLines,
+    },
+    {
+        num: 4, cls: "t4",
+        title: "Multiple Inheritance  (Mixin Pattern)",
+        desc:  "JS has no native MI. Mixin functions compose multiple behaviours onto one class.",
+        diagram: `Mixins:  <span class='hl'>Flyable</span>  •  <span class='hl'>Swimmable</span>  •  <span class='hl'>Runnable</span>\n\n<span class='hl'>Duck</span>   extends  Runnable( Swimmable( Flyable( AnimalBase ) ) )\n<span class='hl'>Eagle</span>  extends  Runnable( Flyable( AnimalBase ) )\n<span class='hl'>Fish</span>   extends  Swimmable( AnimalBase )`,
+        lines: multipleLines,
+    },
+    {
+        num: 5, cls: "t5",
+        title: "Hybrid Inheritance",
+        desc:  "Combination of Hierarchical + Multilevel + Mixin in one class hierarchy.",
+        diagram: `<span class='hl'>Shape</span>  (Root)\n  ├── <span class='hl'>TwoDShape</span>   extends Shape\n  │     ├── <span class='hl'>Circle</span>     extends TwoDShape\n  │     └── <span class='hl'>Rectangle</span>  extends TwoDShape\n  └── <span class='hl'>ThreeDShape</span>  extends Shape\n        └── <span class='hl'>Sphere</span>     extends Colorable( ThreeDShape )  [+ mixin]`,
+        lines: hybridLines,
+    },
+];
+
+function renderLines(lines) {
+    return lines.map(l => {
+        if (l.type === "section")  return `<span class="out-section">▶ ${l.text}</span>`;
+        if (l.type === "subhead")  return `\n<span class="out-subhead">  ▷ ${l.text}</span>`;
+        if (l.type === "chain")    return `<span class="out-chain">${l.text}</span>`;
+        if (l.type === "kv") {
+            const valCls = l.val === "true"  ? "out-true"  :
+                           l.val === "false" ? "out-false" : "out-value";
+            return `  <span class="out-key">${l.key.padEnd(32)}</span>→  <span class="${valCls}">${l.val}</span>`;
+        }
+        return l.text || "";
+    }).join("\n");
+}
+
+const app = document.getElementById("app");
+cards.forEach(c => {
+    app.innerHTML += `
+<div class="card ${c.cls}">
+  <div class="card-header">
+    <div class="type-badge">${c.num}</div>
+    <div class="type-info">
+      <h2>${c.title}</h2>
+      <p>${c.desc}</p>
+    </div>
+  </div>
+  <div class="diagram">${c.diagram}</div>
+  <div class="output-panel">
+    <h3>Output</h3>
+    <div class="output-box">${renderLines(c.lines)}</div>
+  </div>
+</div>`;
+});
+</script>
+
+</body>
+</html>
