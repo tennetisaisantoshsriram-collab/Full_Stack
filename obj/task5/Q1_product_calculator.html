@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q1 - Interactive Product Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 420px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #2d3748;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      font-size: 0.9rem;
+      color: #718096;
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #cbd5e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #2d3748;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #4299e1;
+    }
+
+    .result-box {
+      margin-top: 28px;
+      background: #ebf8ff;
+      border: 1.5px solid #90cdf4;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .result-box .label {
+      font-size: 0.85rem;
+      color: #2b6cb0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .result-box .total {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2c5282;
+    }
+
+    .error-msg {
+      color: #e53e3e;
+      font-size: 0.8rem;
+      margin-top: 6px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Product Calculator</h1>
+    <p class="subtitle">Total updates automatically as you type.</p>
+
+    <!-- Product Name -->
+    <div class="form-group">
+      <label for="productName">Product Name</label>
+      <input type="text" id="productName" placeholder="e.g. Wireless Headphones" />
+    </div>
+
+    <!-- Quantity -->
+    <div class="form-group">
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" placeholder="e.g. 3" min="1" value="1" />
+      <span class="error-msg" id="qtyError">Quantity must be a positive number.</span>
+    </div>
+
+    <!-- Price per unit -->
+    <div class="form-group">
+      <label for="price">Price per Unit (₹)</label>
+      <input type="number" id="price" placeholder="e.g. 1999" min="0" step="0.01" value="0" />
+      <span class="error-msg" id="priceError">Price cannot be negative.</span>
+    </div>
+
+    <!-- Result -->
+    <div class="result-box">
+      <div class="label">Total Price</div>
+      <div class="total" id="totalDisplay">₹ 0.00</div>
+    </div>
+  </div>
+
+  <script>
+    // Grab all input elements
+    const productNameInput = document.getElementById('productName');
+    const quantityInput    = document.getElementById('quantity');
+    const priceInput       = document.getElementById('price');
+    const totalDisplay     = document.getElementById('totalDisplay');
+    const qtyError         = document.getElementById('qtyError');
+    const priceError       = document.getElementById('priceError');
+
+    /**
+     * calculateTotal() - reads quantity and price, validates them,
+     * computes the product, and updates the DOM with the result.
+     * No page refresh is triggered — purely DOM-based update.
+     */
+    function calculateTotal() {
+      const quantity = parseFloat(quantityInput.value);
+      const price    = parseFloat(priceInput.value);
+
+      let valid = true;
+
+      // Validate quantity
+      if (isNaN(quantity) || quantity <= 0) {
+        qtyError.style.display = 'block';
+        valid = false;
+      } else {
+        qtyError.style.display = 'none';
+      }
+
+      // Validate price
+      if (isNaN(price) || price < 0) {
+        priceError.style.display = 'block';
+        valid = false;
+      } else {
+        priceError.style.display = 'none';
+      }
+
+      if (!valid) {
+        totalDisplay.textContent = '₹ --';
+        return;
+      }
+
+      // Calculate and display total
+      const total = quantity * price;
+      totalDisplay.textContent = '₹ ' + total.toFixed(2);
+    }
+
+    // Attach event listeners — recalculate on every input change
+    quantityInput.addEventListener('input', calculateTotal);
+    priceInput.addEventListener('input', calculateTotal);
+
+    // Initial call to show default state
+    calculateTotal();
+  </script>
+
+</body>
+</html>

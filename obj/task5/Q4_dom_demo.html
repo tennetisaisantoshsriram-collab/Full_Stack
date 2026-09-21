@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Q4 - DOM Explanation & Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7fafc;
+      color: #2d3748;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #2b6cb0;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #718096;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
+    }
+
+    /* ---- Theory Section ---- */
+    .theory {
+      background: #fff;
+      border-left: 4px solid #4299e1;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .theory h2 {
+      font-size: 1.1rem;
+      color: #2b6cb0;
+      margin-bottom: 10px;
+    }
+
+    .theory p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: #4a5568;
+    }
+
+    .theory ul {
+      margin: 10px 0 0 18px;
+      font-size: 0.92rem;
+      color: #4a5568;
+      line-height: 1.8;
+    }
+
+    /* ---- Demo Target Box ---- */
+    #demoBox {
+      background: #edf2f7;
+      border: 2px solid #a0aec0;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+      transition: all 0.4s ease;
+    }
+
+    #demoBox h2 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    #demoBox p {
+      font-size: 0.95rem;
+      color: #718096;
+    }
+
+    /* ---- Button Grid ---- */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    button {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    button:hover  { opacity: 0.88; }
+    button:active { transform: scale(0.97); }
+
+    .btn-content   { background: #4299e1; color: #fff; }
+    .btn-style     { background: #48bb78; color: #fff; }
+    .btn-attribute { background: #ed8936; color: #fff; }
+    .btn-reset     { background: #fc8181; color: #fff; }
+
+    /* ---- Log ---- */
+    .log {
+      background: #1a202c;
+      color: #68d391;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      min-height: 80px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .log p { margin-bottom: 4px; }
+    .log .timestamp { color: #a0aec0; }
+  </style>
+</head>
+<body>
+
+  <h1>Document Object Model (DOM)</h1>
+  <p class="subtitle">Explanation + Live JavaScript Demo</p>
+
+  <!-- Theory Section -->
+  <div class="theory">
+    <h2>What is the DOM?</h2>
+    <p>
+      The <strong>Document Object Model (DOM)</strong> is a programming interface provided by the
+      browser. When a browser loads an HTML page, it parses the markup and builds a tree-like
+      structure in memory — the DOM tree — where every HTML tag becomes a <em>node</em> (object).
+      JavaScript can then read and manipulate these nodes to change what the user sees, without
+      reloading the page.
+    </p>
+    <ul>
+      <li><strong>Content</strong> — via <code>innerHTML</code> / <code>textContent</code></li>
+      <li><strong>Style</strong> — via <code>element.style</code> or <code>classList</code></li>
+      <li><strong>Attributes</strong> — via <code>setAttribute()</code> / <code>getAttribute()</code></li>
+    </ul>
+  </div>
+
+  <!-- Demo Target -->
+  <div id="demoBox">
+    <h2 id="demoTitle">Hello, DOM!</h2>
+    <p id="demoText">This box will change when you click the buttons below.</p>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-grid">
+    <button class="btn-content"   onclick="changeContent()">Change Content</button>
+    <button class="btn-style"     onclick="changeStyle()">Change Style</button>
+    <button class="btn-attribute" onclick="changeAttribute()">Change Attribute</button>
+    <button class="btn-reset"     onclick="resetDemo()">Reset</button>
+  </div>
+
+  <!-- Console Log -->
+  <div class="log" id="logBox"></div>
+
+  <script>
+    // ---------- Helpers ----------
+
+    /**
+     * log(msg) - appends a timestamped message to the on-screen log panel.
+     */
+    function log(msg) {
+      const logBox  = document.getElementById('logBox');
+      const now     = new Date().toLocaleTimeString();
+      const entry   = document.createElement('p');
+      entry.innerHTML = `<span class="timestamp">[${now}]</span> ${msg}`;
+      logBox.appendChild(entry);
+      logBox.scrollTop = logBox.scrollHeight; // auto-scroll to bottom
+    }
+
+    // ---------- Demo Functions ----------
+
+    /**
+     * changeContent() - demonstrates DOM content manipulation.
+     * Uses innerHTML and textContent to update element text.
+     */
+    function changeContent() {
+      // Select elements by their id
+      const title = document.getElementById('demoTitle');
+      const text  = document.getElementById('demoText');
+
+      // Modify inner text (textContent is safer than innerHTML for plain text)
+      title.textContent = 'Content Changed!';
+      text.innerHTML    = 'JavaScript used <code>textContent</code> and <code>innerHTML</code> to update this text — no page reload needed.';
+
+      log('Content updated via <strong>textContent</strong> and <strong>innerHTML</strong>.');
+    }
+
+    /**
+     * changeStyle() - demonstrates DOM style manipulation.
+     * Directly sets CSS properties via element.style.
+     */
+    function changeStyle() {
+      const box = document.getElementById('demoBox');
+
+      // Modify CSS properties through the style object
+      box.style.background   = '#fefcbf';
+      box.style.border       = '2px solid #d69e2e';
+      box.style.borderRadius = '20px';
+      box.style.color        = '#744210';
+
+      log('Style updated via <strong>element.style</strong> (background, border, color).');
+    }
+
+    /**
+     * changeAttribute() - demonstrates DOM attribute manipulation.
+     * Uses setAttribute() to add/change HTML attributes.
+     */
+    function changeAttribute() {
+      const box   = document.getElementById('demoBox');
+      const title = document.getElementById('demoTitle');
+
+      // Set a custom data-* attribute to store metadata
+      box.setAttribute('data-status', 'modified');
+      box.setAttribute('title', 'This element has been modified by JavaScript');
+
+      // Change the id attribute (then restore it for continuity)
+      title.setAttribute('data-author', 'JavaScript DOM');
+
+      log(
+        'Attribute added: <strong>data-status="modified"</strong>, ' +
+        '<strong>title</strong>, <strong>data-author</strong>. ' +
+        'Check via: <em>box.getAttribute("data-status")</em>'
+      );
+    }
+
+    /**
+     * resetDemo() - restores the demoBox to its original state.
+     */
+    function resetDemo() {
+      const box   = document.getElementById('demoBox');
+      const title = document.getElementById('demoTitle');
+      const text  = document.getElementById('demoText');
+
+      // Reset content
+      title.textContent = 'Hello, DOM!';
+      text.textContent  = 'This box will change when you click the buttons below.';
+
+      // Reset style
+      box.style.background   = '';
+      box.style.border       = '';
+      box.style.borderRadius = '';
+      box.style.color        = '';
+
+      // Remove attributes
+      box.removeAttribute('data-status');
+      box.removeAttribute('title');
+      title.removeAttribute('data-author');
+
+      log('Box <strong>reset</strong> to original state (content, style, attributes).');
+    }
+
+    // Initial log entry
+    log('Page loaded. DOM is ready. Try the buttons above!');
+  </script>
+
+</body>
+</html>
