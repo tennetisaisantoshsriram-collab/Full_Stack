@@ -1,0 +1,15 @@
+{
+  "name": "q7-npm-package",
+  "version": "1.0.0",
+  "description": "Demonstrating NPM and package.json with an external package",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"No tests defined\" && exit 0"
+  },
+  "author": "Student",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^11.1.1"
+  }
+}

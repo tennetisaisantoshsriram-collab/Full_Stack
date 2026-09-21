@@ -1,0 +1,14 @@
+{
+  "name": "q8-express-middleware",
+  "version": "1.0.0",
+  "description": "Express.js middleware demonstration — logging and request-response cycle",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Student",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
