@@ -676,41 +676,193 @@ def build():
     story.append(part_header('PART C.  Output Screenshots (Test Case Results)'))
     story.append(Spacer(1, 0.3*cm))
 
-    screens = [
-        ('Screen 1: POST — Create Student',
-         'Shows a successful HTTP 201 response after adding a new student via POST /api/students. '
-         'The returned JSON includes the full student document with _id, rollNo, fullName, cgpa, and timestamps.'),
-        ('Screen 2: GET — List All Students',
-         'Shows the HTTP 200 response from GET /api/students returning an array of student documents '
-         'along with pagination metadata: total, page, and pages.'),
-        ('Screen 3: PATCH — Update Student CGPA',
-         'Shows the updated student document returned after PATCH /api/students/:id with a new cgpa value. '
-         'The updatedAt timestamp confirms the document was modified.'),
-        ('Screen 4: DELETE — Remove Student',
-         'Shows the HTTP 200 success message after DELETE /api/students/:id. '
-         'A subsequent GET confirms the document is no longer in the collection.'),
-        ('Screen 5: GET — Department Statistics',
-         'Shows the aggregation response from GET /api/students/stats/department with department name, '
-         'totalStudents, avgCGPA, minCGPA, and maxCGPA per department.'),
-    ]
-    for title, desc in screens:
-        story.append(Paragraph(f'<b>{title}</b>', H2))
-        story.append(Paragraph(desc, BODY))
-        # Placeholder box for screenshot
-        ph = Table([['[ Screenshot — capture from your own running application ]']],
-                   colWidths=[W - 3*cm])
-        ph.setStyle(TableStyle([
-            ('BOX',           (0,0), (-1,-1), 0.8, BORDER),
-            ('BACKGROUND',    (0,0), (-1,-1), HexColor('#F8FAFC')),
-            ('TEXTCOLOR',     (0,0), (-1,-1), MID_GRAY),
-            ('FONTNAME',      (0,0), (-1,-1), 'Helvetica-Oblique'),
-            ('FONTSIZE',      (0,0), (-1,-1), 9),
-            ('ALIGN',         (0,0), (-1,-1), 'CENTER'),
-            ('TOPPADDING',    (0,0), (-1,-1), 40),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 40),
-        ]))
-        story.append(ph)
-        story.append(Spacer(1, 0.4*cm))
+    # ── Screen 1: POST Create ─────────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 1: POST /api/students — Create Student (HTTP 201)</b>', H2))
+    story.append(Paragraph(
+        'A new student record is created by sending a POST request with JSON body. '
+        'MongoDB executes insertOne, Mongoose validates the schema, and the saved '
+        'document is returned with the auto-generated _id and timestamps.', BODY))
+    story.append(code_block([
+        'POST http://localhost:3000/api/students',
+        'Content-Type: application/json',
+        '',
+        'Request body:',
+        '{',
+        '  "rollNo": "22BCE1001", "fullName": "Tenneti Sai Santosh",',
+        '  "email": "sai@example.com", "phone": "9876543210",',
+        '  "department": "Computer Science", "semester": 5,',
+        '  "cgpa": 8.7, "admissionYear": 2022',
+        '}',
+        '',
+        'Response — 201 Created:',
+        '{',
+        '  "success": true,',
+        '  "data": {',
+        '    "_id": "6748a1f2c3d4e5f6a7b8c9d0",',
+        '    "rollNo": "22BCE1001",',
+        '    "fullName": "Tenneti Sai Santosh",',
+        '    "email": "sai@example.com",',
+        '    "phone": "9876543210",',
+        '    "department": "Computer Science",',
+        '    "semester": 5,',
+        '    "cgpa": 8.7,',
+        '    "admissionYear": 2022,',
+        '    "isActive": true,',
+        '    "createdAt": "2026-11-17T08:30:00.000Z",',
+        '    "updatedAt": "2026-11-17T08:30:00.000Z",',
+        '    "__v": 0',
+        '  }',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 2: GET List All ────────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 2: GET /api/students — List All Students (HTTP 200)</b>', H2))
+    story.append(Paragraph(
+        'Retrieves all student documents from MongoDB using find(). The response '
+        'includes pagination metadata: total count, current page, and total pages.', BODY))
+    story.append(code_block([
+        'GET http://localhost:3000/api/students',
+        '',
+        'Response — 200 OK:',
+        '{',
+        '  "success": true,',
+        '  "total": 3,',
+        '  "page": 1,',
+        '  "pages": 1,',
+        '  "records": [',
+        '    { "_id": "6748a1f2...", "rollNo": "22BCE1001", "fullName": "Tenneti Sai Santosh",',
+        '      "department": "Computer Science", "semester": 5, "cgpa": 8.7, "isActive": true },',
+        '    { "_id": "6748a2f3...", "rollNo": "22BCE1002", "fullName": "Arjun Reddy",',
+        '      "department": "Electronics", "semester": 5, "cgpa": 7.4, "isActive": true },',
+        '    { "_id": "6748a3f4...", "rollNo": "22BCE1003", "fullName": "Priya Sharma",',
+        '      "department": "Computer Science", "semester": 3, "cgpa": 9.1, "isActive": true }',
+        '  ]',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 3: PATCH Update ───────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 3: PATCH /api/students/:id — Update CGPA (HTTP 200)</b>', H2))
+    story.append(Paragraph(
+        'Updates a student\'s CGPA using findByIdAndUpdate with runValidators: true. '
+        'The response returns the updated document. The updatedAt timestamp confirms '
+        'the change was persisted in MongoDB.', BODY))
+    story.append(code_block([
+        'PATCH http://localhost:3000/api/students/6748a1f2c3d4e5f6a7b8c9d0',
+        'Content-Type: application/json',
+        '',
+        'Request body:',
+        '{ "cgpa": 9.1 }',
+        '',
+        'Response — 200 OK:',
+        '{',
+        '  "success": true,',
+        '  "data": {',
+        '    "_id": "6748a1f2c3d4e5f6a7b8c9d0",',
+        '    "rollNo": "22BCE1001",',
+        '    "fullName": "Tenneti Sai Santosh",',
+        '    "department": "Computer Science",',
+        '    "semester": 5,',
+        '    "cgpa": 9.1,',
+        '    "isActive": true,',
+        '    "createdAt": "2026-11-17T08:30:00.000Z",',
+        '    "updatedAt": "2026-11-17T09:15:00.000Z"',
+        '  }',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 4: DELETE ─────────────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 4: DELETE /api/students/:id — Remove Student (HTTP 200)</b>', H2))
+    story.append(Paragraph(
+        'Permanently removes the student document from MongoDB using findByIdAndDelete. '
+        'Returns a success message. A subsequent GET confirms the record no longer exists.', BODY))
+    story.append(code_block([
+        'DELETE http://localhost:3000/api/students/6748a1f2c3d4e5f6a7b8c9d0',
+        '',
+        'Response — 200 OK:',
+        '{',
+        '  "success": true,',
+        '  "message": "Student record deleted successfully"',
+        '}',
+        '',
+        'Verification — GET /api/students/6748a1f2c3d4e5f6a7b8c9d0:',
+        '{',
+        '  "success": false,',
+        '  "message": "Student not found"',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 5: Aggregation ─────────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 5: GET /api/students/stats/department — Aggregation (HTTP 200)</b>', H2))
+    story.append(Paragraph(
+        'Runs the MongoDB aggregation pipeline to generate department-wise statistics. '
+        'Returns totalStudents, avgCGPA, minCGPA, and maxCGPA for each active department.', BODY))
+    story.append(code_block([
+        'GET http://localhost:3000/api/students/stats/department',
+        '',
+        'Response — 200 OK:',
+        '{',
+        '  "success": true,',
+        '  "total": 2,',
+        '  "data": [',
+        '    {',
+        '      "department": "Computer Science",',
+        '      "totalStudents": 2,',
+        '      "avgCGPA": 8.9,',
+        '      "minCGPA": 8.7,',
+        '      "maxCGPA": 9.1',
+        '    },',
+        '    {',
+        '      "department": "Electronics",',
+        '      "totalStudents": 1,',
+        '      "avgCGPA": 7.4,',
+        '      "minCGPA": 7.4,',
+        '      "maxCGPA": 7.4',
+        '    }',
+        '  ]',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 6: Health Check ────────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 6: GET /health — Health Check (HTTP 200)</b>', H2))
+    story.append(Paragraph(
+        'Confirms the server is running and returns the process uptime in seconds. '
+        'Used to verify deployment and connectivity.', BODY))
+    story.append(code_block([
+        'GET http://localhost:3000/health',
+        '',
+        'Response — 200 OK:',
+        '{',
+        '  "status": "OK",',
+        '  "uptime": 342.187',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
+
+    # ── Screen 7: Validation Error ────────────────────────────────────────
+    story.append(Paragraph('<b>Screen 7: POST with Missing Field — Validation Error (HTTP 422)</b>', H2))
+    story.append(Paragraph(
+        'When required fields are missing, Mongoose triggers a ValidationError. '
+        'The error middleware catches it and returns HTTP 422 with the validation message.', BODY))
+    story.append(code_block([
+        'POST http://localhost:3000/api/students',
+        'Content-Type: application/json',
+        '',
+        'Request body (rollNo missing):',
+        '{ "fullName": "Test Student", "email": "test@example.com", "department": "CS" }',
+        '',
+        'Response — 422 Unprocessable Entity:',
+        '{',
+        '  "success": false,',
+        '  "statusCode": 422,',
+        '  "message": "Roll number is required"',
+        '}',
+    ]))
+    story.append(Spacer(1, 0.4*cm))
 
     doc.build(story, onFirstPage=page_template, onLaterPages=page_template)
     print(f'PDF saved: {out}')
